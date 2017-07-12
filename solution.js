@@ -11,6 +11,8 @@
                 }
             }
             elevator.getDirection = function(queue = this.destinationQueue) {
+                // I'm bummed that I had to write this, 
+                // feels like the API's destinationDirection() should have provided the right info
                 if(queue.length === 0) return "stopped";
                 if(this.currentFloor() > queue[0]) return "down";
                 if(this.currentFloor() < queue[0]) return "up";
@@ -31,6 +33,7 @@
                 this.checkDestinationQueue();
             }
             elevator.goTo = function(floorNum) {
+                // am I doing something wrong because I am manipulating the destination queue by hand?
                 if(floorNum === this.currentFloor() && this.isFull()) return;
                 this.destinationQueue.push(floorNum);
                 var self = this;
@@ -107,11 +110,12 @@
         
         for(var floor of floors) {
             floor.on("up_button_pressed down_button_pressed ", function() {
-                var self = this;
-                var elevator = elevators.find(function(e) {
-                    e.getDirection() === "stopped";
-                })|| elevators[Math.floor(Math.random() * elevators.length)]
-                //elevator.goTo(this.floorNum());
+//                 Commented out because idle elevators will go to 0 or the top floor if already on 0 
+//                 var self = this;
+//                 var elevator = elevators.find(function(e) {
+//                     e.getDirection() === "stopped";
+//                 })|| elevators[Math.floor(Math.random() * elevators.length)]
+//                 elevator.goTo(this.floorNum());
             })
         }
     },
